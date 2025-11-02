@@ -43,3 +43,4 @@ BuildContext is an object that represents the location of a widget in the widget
 
 A hot reload applies code changes to the app and rebuilds the widget tree without resetting the current state. A hot restart restarts the Dart VM, runs main() again, and clears all state, so the app goes back to the initial screen. Hot reload is used for quick UI or logic updates, while hot restart is used when the change affects initialization or state setup.
 
+
