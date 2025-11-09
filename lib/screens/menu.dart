@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:queen_kicks/screens/productlist_form.dart';
+import 'package:queen_kicks/widgets/left_drawer.dart';
+import 'package:queen_kicks/widgets/product_card.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
@@ -13,7 +16,6 @@ class MyHomePage extends StatelessWidget {
     ItemHomepage("Create Product", Icons.add),
   ];
 
-  
   @override
     Widget build(BuildContext context) {
     // Scaffold menyediakan struktur dasar halaman dengan AppBar dan body.
@@ -31,6 +33,7 @@ class MyHomePage extends StatelessWidget {
         // Warna latar belakang AppBar diambil dari skema warna tema aplikasi.
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
+      drawer: LeftDrawer(),
       // Body halaman dengan padding di sekelilingnya.
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -151,6 +154,11 @@ class ItemCard extends StatelessWidget {
             ..showSnackBar(
               SnackBar(content: Text("You have pressed the ${item.name} button"))
             );
+          // Navigate to the appropriate route (depending on the button type)
+          if (item.name == "Create Product") {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const ProductFormPage(),
+            ),);
+          }
         },
         // Container untuk menyimpan Icon dan Text
         child: Container(
@@ -184,7 +192,6 @@ class ItemCard extends StatelessWidget {
   if (name == "Create Product") return Colors.red;
   return Colors.grey; // backup color
 }
-
 }
 
 class ItemHomepage {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:queen_kicks/menu.dart';
+import 'package:queen_kicks/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());
