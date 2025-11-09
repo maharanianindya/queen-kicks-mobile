@@ -43,4 +43,22 @@ BuildContext is an object that represents the location of a widget in the widget
 
 A hot reload applies code changes to the app and rebuilds the widget tree without resetting the current state. A hot restart restarts the Dart VM, runs main() again, and clears all state, so the app goes back to the initial screen. Hot reload is used for quick UI or logic updates, while hot restart is used when the change affects initialization or state setup.
 
+## Assignment 8 
 
+1. Explain the difference between Navigator.push() and Navigator.pushReplacement() in Flutter. In what context of your application is each best used?
+
+Navigator.push() adds a new page on top of the navigation stack, so the previous page is still there and can be returned to with the back button. Navigator.pushReplacement() removes the current page and replaces it with a new one, so going “back” won’t return to the old page. In my application, Navigator.push() is best used for "Add Product", where the user might want to go back to the previous page after completing the form. Navigator.pushReplacement() is better for switching between main pages through the drawer menu, since it replaces the current page entirely. 
+
+2.  How do you use hierarchy widget like Scaffold, AppBar, dan Drawer to build a consistent page structure in the your application?
+
+Scaffold acts as the main structure that organizes the page into sections like the app bar, drawer, and body. AppBar provides a uniform header with the page title or navigation icons, keeping the top section of every page consistent. Drawer is attached to the Scaffold so users can easily access the same side navigation menu from any page, maintaining a consistent and familiar interface throughout the app.
+
+3. In the context of user interface design, what do you think is the advantages of using layout widget like Padding, SingleChildScrollView, and ListView when displaying form elements? Provide usage examples from your application.
+
+Padding -> adds space around each field, so it doesn't stick to the edges or to each other, making the form clearer and more comfortable to scan. In ProductForm page, each TextFormField is wrapped with Padding to seperate Name, Description, Price, etc
+SingleChildScrollView -> allows the entire form to scroll, so on small screens or when the keyboard appears, all fields remain visible instead of going out of view. In ProductFormPage, Column is wrapped in a SingleChildScrollView
+ListView -> useful for longer, repeatable, or dynamic lists of inputs because it scrolls by default and handles many children efficiently. Listview is used in LeftDrawer to display the drawer content in a scrollable vertical list. 
+
+4. How do you set the color theme so that your Football Shop have a visual identity that is consistent with the shop brand.
+
+In this app, a custom ColorScheme is defined in theme: inside MaterialApp. Widgets like AppBar, buttons, and cards then use Theme.of(context).colorScheme for their background and accent colors, so the whole app keeps a consistent look that matches the brand on every screen.
