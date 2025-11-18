@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:queen_kicks/widgets/left_drawer.dart';
+import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:queen_kicks/screens/menu.dart';
 
 class ProductFormPage extends StatefulWidget {
     const ProductFormPage({super.key});
@@ -26,7 +30,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
     @override
     Widget build(BuildContext context) {
-        return Scaffold(
+      final request = context.watch<CookieRequest>();
+      return Scaffold(
   appBar: AppBar(
     title: const Center(
       child: Text(
@@ -201,41 +206,43 @@ class _ProductFormPageState extends State<ProductFormPage> {
             backgroundColor:
                 MaterialStateProperty.all(Colors.indigo),
           ),
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text('Product saved successfully'),
-                    content: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                        children: [
-                          Text('Name: $_name'),
-                          Text('Description: $_description'),
-                          Text('Category: $_category'),
-                          Text('Price: $_price'),
-                          Text('Thumbnail: ${_thumbnail.isEmpty ? "-" : _thumbnail}'),
-                          Text('Featured: ${_isFeatured ? "Yes" : "No"}'),
-                        ],
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
-                        child: const Text('OK'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                           _formKey.currentState!.reset();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            }
-          },
+          onPressed: () async {
+  if (_formKey.currentState!.validate()) {
+    // TODO: Replace the URL with your app's URL
+    // To connect Android emulator with Django on localhost, use URL http://10.0.2.2/
+    // If you using chrome,  use URL http://localhost:8000
+    
+    final response = await request.postJson(
+      "http://localhost:8000/create-flutter/",
+      jsonEncode({
+        "name": _name,
+        "description": _description,
+        "thumbnail": _thumbnail,
+        "category": _category,
+        "price": _price,
+        "is_featured": _isFeatured,
+      }),
+    );
+    if (context.mounted) {
+      if (response['status'] == 'success') {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(
+          content: Text("Product successfully saved!"),
+        ));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyHomePage()),
+        );
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(
+          content: Text("Something went wrong, please try again."),
+        ));
+      }
+    }
+  }
+},
           child: const Text(
             "Save",
             style: TextStyle(color: Colors.white),

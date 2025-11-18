@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:queen_kicks/screens/menu.dart';
 import 'package:queen_kicks/screens/productlist_form.dart';
+import 'package:queen_kicks/screens/product_entry_list.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -63,10 +64,10 @@ class LeftDrawer extends StatelessWidget {
           leading: const Icon(Icons.list_alt),
           title: const Text('Product List'),
           onTap: () {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage()),
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProductEntryListPage()),
             );
           },
-        )
+        ),
        ],
       ),
     );
