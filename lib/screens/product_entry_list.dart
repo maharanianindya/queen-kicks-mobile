@@ -45,53 +45,59 @@ class _ProductEntryListPageState extends State<ProductEntryListPage> {
     return listProduct;
   }
 
-
   @override
-  Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
-    return Scaffold(
-      appBar: AppBar(
-         title: Text(widget.onlyMine ? 'My Products' : 'Product Entry List'),
-      ),
-      drawer: const LeftDrawer(),
-      body: FutureBuilder(
-        future: fetchProduct(request),
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.data == null) {
-            return const Center(child: CircularProgressIndicator());
+Widget build(BuildContext context) {
+  final request = context.watch<CookieRequest>();
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(widget.onlyMine ? 'My Products' : 'Product Entry List'),
+    ),
+    drawer: const LeftDrawer(),
+    body: FutureBuilder(
+      future: fetchProduct(request),
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.data == null) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          if (!snapshot.hasData) {
+            return const Column(
+              children: [
+                Text(
+                  'There are no product in Queen Kicks yet.',
+                  style: TextStyle(fontSize: 20, color: Color(0xff59A5D8)),
+                ),
+                SizedBox(height: 8),
+              ],
+            );
           } else {
-            if (!snapshot.hasData) {
-              return const Column(
-                children: [
-                  Text(
-                    'There are no product in Queen Kicks yet.',
-                    style: TextStyle(fontSize: 20, color: Color(0xff59A5D8)),
-                  ),
-                  SizedBox(height: 8),
-                ],
-              );
-            } else {
-              return ListView.builder(
-  itemCount: snapshot.data!.length,
-  itemBuilder: (_, index) => ProductEntryCard(
-    product: snapshot.data![index],
-    onTap: () {
-      // Navigate to product detail page
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProductDetailPage(
-            product: snapshot.data![index],
-          ),
-        ),
-      );
-    },
-  ),
-);
-            }
+    
+            return GridView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: snapshot.data!.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,       
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 0.7,    
+              ),
+              itemBuilder: (_, index) => ProductEntryCard(
+                product: snapshot.data![index],
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductDetailPage(
+                        product: snapshot.data![index],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
           }
-        },
-      ),
-    );
-  }
+        }
+      },
+    ),
+  );
+}
 }
